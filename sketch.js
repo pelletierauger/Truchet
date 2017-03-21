@@ -1,3 +1,4 @@
+var looping = true;
 var gridXAmount = 32 * 1;
 var gridYAmount = 18 * 1;
 var tileWidth;
@@ -6,6 +7,7 @@ var current;
 var dark;
 var light;
 var r, g, b;
+
 
 function setup() {
     createCanvas(windowWidth, windowWidth * 9 / 16);
@@ -21,30 +23,26 @@ function setup() {
 }
 
 function draw() {
+    truchetSinewave();
+}
+
+function truchetSinewave() {
     for (var x = 0; x < width; x += tileWidth) {
         for (var y = 0; y < height; y += tileWidth) {
-            switch (current) {
-                case 0:
-                    showA(x, y, tileWidth, light, dark);
-                    break;
-                case 1:
-                    showB(x, y, tileWidth, light, dark);
-                    break;
-                case 2:
-                    showC(x, y, tileWidth, light, dark);
-                    break;
-                case 3:
-                    showD(x, y, tileWidth, light, dark);
-                    break;
-                default:
-                    showD(x, y, tileWidth);
-            }
+            show(current, x, y, tileWidth, light, dark);
+            // truchetAlgorithm(x, y, tileWidth, light, dark);
             current = map(sin((x + y * gridXAmount) / number), -1, 1, 0, 4);
             // r = map(sin((x + y * gridXAmount) / number), -1, 1, 0, 55);
             // g = map(sin((x + y * gridXAmount) / number), -1, 1, 155, 25);
             // b = map(cos((x + y * gridXAmount) / number), -1, 1, 150, 5);
+            // r = map(x / tileWidth, 0, gridXAmount, 0, 255);
+            // g = map(y / tileWidth, 0, gridYAmount, 255, 0);
+            // b = map(y / tileWidth, 0, gridYAmount, 0, 255);
             // dark = color(r / 2, g / 2, b / 2);
             // light = color(r, g, b);
+            // dark = color(r, g, b);
+            // light = color(g, b, g);
+            // dark = color(b, g, r);
             current = floor(current);
         }
 
@@ -56,6 +54,35 @@ function draw() {
         // }
     }
     number += 1;
+}
+
+function truchetAlgorithm(x, y, tW, light, dark) {
+    var current;
+    if (y % 3 == 0) {
+        current = 0;
+    } else {
+        current = 2;
+    }
+    show(current, x, y, tileWidth, light, dark);
+}
+
+function show(position, x, y, tW, light, dark) {
+    switch (position) {
+        case 0:
+            showA(x, y, tileWidth, light, dark);
+            break;
+        case 1:
+            showB(x, y, tileWidth, light, dark);
+            break;
+        case 2:
+            showC(x, y, tileWidth, light, dark);
+            break;
+        case 3:
+            showD(x, y, tileWidth, light, dark);
+            break;
+        default:
+            showA(x, y, tileWidth, light, dark);
+    }
 }
 
 function showA(x, y, tW, light, dark) {
@@ -100,4 +127,16 @@ function showD(x, y, tW, light, dark) {
     vertex(x + tW, y + tW);
     vertex(x, y + tW);
     endShape();
+}
+
+function keyPressed() {
+    if (keyCode === 32) {
+        if (looping) {
+            noLoop();
+            looping = false;
+        } else {
+            loop();
+            looping = true;
+        }
+    }
 }
