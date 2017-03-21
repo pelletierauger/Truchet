@@ -2,3 +2,21 @@
 
 \section{Introduction}
 Ceci est l'introduction à mon projet sur les pavages de Truchet.
+
+\section{Réflexions diverses}
+
+Je dois penser à mes systèmes de Truchet comme à des espaces mathématiques dans lesquels je peux me déplacer, un peu comme l'ensemble de Mandelbrot est un espace mathématique. Je peux créer des \textit{ensembles de Truchet} que mon système pourra visualiser à n'importe quelles valeurs.
+
+Idéalement, il me faudrait pouvoir définir mes ensembles de Truchet ainsi :
+Un groupe de 4 permutations : A, C, B, A, miroité horizontalement avec A, B, C, A, et miroité verticalement avec X, X, X, X.
+
+Essentiellement, je dois pouvoir définir un bloc, de telle largeur et telle hauteur, et ensuite, définir ses répétitions et, optionnellement, ses symétries.
+
+\begin{lstlisting}
+var block = {
+    lines : [ABBACDAB, CDDBDADD],
+    horizontalSymmetry: true,
+    verticalSymmetry: false,
+    diagonalSymmetry: false
+};
+\end{lstlisting}
