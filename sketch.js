@@ -23,7 +23,36 @@ function setup() {
 }
 
 function draw() {
-    truchetSinewave();
+    truchetAlgorithm2();
+}
+
+function truchetAlgorithm2() {
+    for (var x = 0; x < width; x += tileWidth) {
+        for (var y = 0; y < height; y += tileWidth) {
+            if (x / tileWidth % 2 == 0) {
+                if (y / tileWidth % 2 == 0) {
+                    current = 0;
+                    light = color(255, 0, 0);
+                } else {
+                    current = 1;
+                    light = color(255, 255, 0);
+                }
+
+            } else {
+                if (y / tileWidth % 2 == 0) {
+                    current = 3;
+                    light = color(0, 0, 255);
+                } else {
+                    current = 2;
+                    light = color(0, 255, 0);
+                }
+
+            }
+
+            show(current, x, y, tileWidth, light, dark);
+        }
+    }
+    number += 1;
 }
 
 function truchetSinewave() {
