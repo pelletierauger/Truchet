@@ -84,7 +84,16 @@ var blockOne = new Block({
     type: "static",
     size: { width: 8, height: 4 },
     maxSize: { width: 500, height: 700 },
-    data: ["AD", "BC", "AEAECFCF", "EEEEFFFF"],
+    data: ["CBCB", "DFFA", "CBCB", "BCBC"],
+    horizontalSymmetry: false,
+    verticalSymmetry: false
+});
+
+var blockTwo = new Block({
+    type: "static",
+    size: { width: 8, height: 4 },
+    maxSize: { width: 500, height: 700 },
+    data: ["ACCA", "DBBD", "FEEF", "CDDC"],
     horizontalSymmetry: false,
     verticalSymmetry: false
 });
