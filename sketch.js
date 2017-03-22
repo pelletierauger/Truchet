@@ -18,7 +18,7 @@ function setup() {
     noStroke();
     current = 0;
     // noLoop();
-    dark = color(0);
+    dark = color(50);
     light = color(120);
 }
 
@@ -26,9 +26,19 @@ function draw() {
     // truchetAlgorithm3();
     // blockOne.showTiling();
     // show("A", width / 2, height / 2, tileWidth, light, dark);
-    animate();
+    // animate();
+    animateAlgo();
 }
 
+function animateAlgo() {
+    for (var x = 0; x < width; x += tileWidth) {
+        for (var y = 0; y < height; y += tileWidth) {
+            var lerpValue = map(sin(frameCount / 5), -1, 1, 0, 1);
+            animateAtoB(x, y, lerpValue);
+            // rect(x, y, x + tileWidth, y + tileWidth);
+        }
+    }
+}
 
 function truchetAlgorithm3() {
     var truchetArray = [];
