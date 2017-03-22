@@ -23,7 +23,8 @@ function setup() {
 }
 
 function draw() {
-    truchetAlgorithm3();
+    // truchetAlgorithm3();
+    blockOne.showTiling();
 }
 
 function truchetAlgorithm3() {
@@ -164,6 +165,12 @@ function showNumeral(position, x, y, tW, light, dark) {
         case "D":
             showD(x, y, tileWidth, light, dark);
             break;
+        case "E":
+            showE(x, y, tileWidth, light, dark);
+            break;
+        case "F":
+            showF(x, y, tileWidth, light, dark);
+            break;
         default:
             showA(x, y, tileWidth, light, dark);
     }
@@ -211,6 +218,16 @@ function showD(x, y, tW, light, dark) {
     vertex(x + tW, y + tW);
     vertex(x, y + tW);
     endShape();
+}
+
+function showE(x, y, tW, light, dark) {
+    fill(light);
+    rect(x, y, tW, tW);
+}
+
+function showF(x, y, tW, light, dark) {
+    fill(dark);
+    rect(x, y, tW, tW);
 }
 
 function keyPressed() {
