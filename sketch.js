@@ -17,14 +17,50 @@ function setup() {
     fill(150);
     noStroke();
     current = 0;
-    // noLoop();
+    noLoop();
     dark = color(50);
     light = color(120);
 }
 
 function draw() {
-    truchetAlgorithm2();
+    truchetAlgorithm3();
 }
+
+function truchetAlgorithm3() {
+    var truchetArray = [];
+    var truchetArraySize = 32 * 18;
+    var block = {
+        lines: ["AAAABBBBCCCCDDDD"],
+        horizontalSymmetry: true,
+        verticalSymmetry: false
+    };
+    fillArray(block, truchetArray);
+    showArray(truchetArray);
+
+    function fillArray(block, truchetArray, startX, startY) {
+
+        var instruction = block.lines[0];
+        // console.log(block.lines[0].length);
+        while (truchetArray.length < truchetArraySize) {
+            for (var i = 0; i < instruction.length; i++) {
+                // console.log(instruction[i]);
+                truchetArray.push(instruction[i]);
+            }
+        }
+
+    }
+
+    function showArray(truchetArray) {
+        console.log(truchetArray);
+        for (var x = 0; x < width; x += tileWidth) {
+            for (var y = 0; y < height; y += tileWidth) {
+                var current = truchetArray[(x / tileWidth) + (y / tileWidth) * gridXAmount];
+                showNumeral(current, x, y, tileWidth, light, dark);
+            }
+        }
+    }
+}
+
 
 function truchetAlgorithm2() {
     for (var x = 0; x < width; x += tileWidth) {
@@ -32,19 +68,19 @@ function truchetAlgorithm2() {
             if (x / tileWidth % 2 == 0) {
                 if (y / tileWidth % 2 == 0) {
                     current = 0;
-                    light = color(255, 0, 0);
+                    // light = color(255, 0, 0);
                 } else {
                     current = 1;
-                    light = color(255, 255, 0);
+                    // light = color(255, 255, 0);
                 }
 
             } else {
                 if (y / tileWidth % 2 == 0) {
                     current = 3;
-                    light = color(0, 0, 255);
+                    // light = color(0, 0, 255);
                 } else {
                     current = 2;
-                    light = color(0, 255, 0);
+                    // light = color(0, 255, 0);
                 }
 
             }
@@ -107,6 +143,25 @@ function show(position, x, y, tW, light, dark) {
             showC(x, y, tileWidth, light, dark);
             break;
         case 3:
+            showD(x, y, tileWidth, light, dark);
+            break;
+        default:
+            showA(x, y, tileWidth, light, dark);
+    }
+}
+
+function showNumeral(position, x, y, tW, light, dark) {
+    switch (position) {
+        case "A":
+            showA(x, y, tileWidth, light, dark);
+            break;
+        case "B":
+            showB(x, y, tileWidth, light, dark);
+            break;
+        case "C":
+            showC(x, y, tileWidth, light, dark);
+            break;
+        case "D":
             showD(x, y, tileWidth, light, dark);
             break;
         default:
