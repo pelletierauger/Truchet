@@ -12,20 +12,23 @@ var r, g, b;
 function setup() {
     createCanvas(windowWidth, windowWidth * 9 / 16);
     background(51);
-    frameRate(10);
+    // frameRate(10);
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
     current = 0;
-    noLoop();
-    dark = color(50);
+    // noLoop();
+    dark = color(0);
     light = color(120);
 }
 
 function draw() {
     // truchetAlgorithm3();
-    blockOne.showTiling();
+    // blockOne.showTiling();
+    // show("A", width / 2, height / 2, tileWidth, light, dark);
+    animate();
 }
+
 
 function truchetAlgorithm3() {
     var truchetArray = [];
