@@ -45,16 +45,16 @@ Block.prototype.makeTiling = function() {
     var myTiling = tilingFiller({
         space: this.fullSpace,
         offset: { x: 0, y: 0 },
-        outputSize: { width: 32, height: 18 }
+        outputSize: { width: gridXAmount, height: gridYAmount }
     });
     // console.log(myTiling);
     return myTiling;
 };
 
 Block.prototype.showTiling = function() {
-    for (var x = 0; x < 32 * tileWidth; x += tileWidth) {
-        for (var y = 0; y < 18 * tileWidth; y += tileWidth) {
-            var current = this.tiling[(x / tileWidth) + (y / tileWidth) * 32];
+    for (var x = 0; x < gridXAmount * tileWidth; x += tileWidth) {
+        for (var y = 0; y < gridYAmount * tileWidth; y += tileWidth) {
+            var current = this.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
             // console.log(current);
             showNumeral(current, x, y, tileWidth, light, dark);
         }
@@ -82,20 +82,41 @@ function tilingFiller(instructions) {
 
 var blockOne = new Block({
     type: "static",
-    size: { width: 8, height: 4 },
+    size: { width: 8, height: 8 },
     maxSize: { width: 500, height: 700 },
-    data: ["DADA", "BCBC", "DADA", "BCBC"],
-    // data: ["CCCC", "CCCC", "CCCC", "CCCC"],
+    data: ["BBDADACC",
+        "BDBCBCAC",
+        "DBBADCCA",
+        "CACBCBDB",
+        "DBDADACA",
+        "CAABCDDB",
+        "ACADADBD",
+        "AACBCBDD"
+    ],
+    // data: ["CB", "DD", "CB", "DD"],
     horizontalSymmetry: false,
     verticalSymmetry: false
 });
 
 var blockTwo = new Block({
     type: "static",
-    size: { width: 8, height: 4 },
+    size: { width: 12, height: 12 },
     maxSize: { width: 500, height: 700 },
-    data: ["AD", "CB", "AD", "CB"],
-    // data: ["AAAA", "AAAA", "AAAA", "AAAA"],
+    data: ["BBDCACBDBACC",
+        "BBBDCADBACCC",
+        "DBBBDCBACCCA",
+        "ADBBBDACCCAD",
+        "CADBBBCCCADB",
+        "ACADBBCCADBD",
+        "BDBCAADDBCAC",
+        "DBCAAADDDBCA",
+        "BCAAACBDDDBC",
+        "CAAACDABDDDB",
+        "AAACDBCABDDD",
+        "AACDBDACABDD"
+    ],
+    // data: ["AD", "CB", "AD", "CB"],
+    // data: ["CC", "DD", "CC", "DD"],
     horizontalSymmetry: false,
     verticalSymmetry: false
 });

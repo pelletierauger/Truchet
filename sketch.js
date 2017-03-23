@@ -1,6 +1,6 @@
 var looping = true;
-var gridXAmount = 32 * 1;
-var gridYAmount = 18 * 1;
+var gridXAmount = 32 * 2;
+var gridYAmount = 18 * 2;
 var tileWidth;
 var number = 1;
 var current;
@@ -16,6 +16,7 @@ function setup() {
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
+    // stroke(70);
     current = 0;
     // noLoop();
     dark = color(50);
@@ -27,6 +28,7 @@ function draw() {
     // blockOne.showTiling();
     // show("A", width / 2, height / 2, tileWidth, light, dark);
     // animate();
+    background(color(100));
     animate2TilingsAlgo();
     // animateAlgo();
 }
@@ -34,7 +36,7 @@ function draw() {
 function animate2TilingsAlgo() {
     for (var x = 0; x < width; x += tileWidth) {
         for (var y = 0; y < height; y += tileWidth) {
-            var lerpValue = map(sin(frameCount / 20), -1, 1, -1, 2);
+            var lerpValue = map(sin(frameCount / 20), -1, 1, -0.4, 1.4);
             lerpValue = constrain(lerpValue, 0, 1);
             var current = blockOne.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
             var current2 = blockTwo.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
