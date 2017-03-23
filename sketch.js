@@ -27,14 +27,30 @@ function draw() {
     // blockOne.showTiling();
     // show("A", width / 2, height / 2, tileWidth, light, dark);
     // animate();
-    animateAlgo();
+    animate2TilingsAlgo();
+    // animateAlgo();
+}
+
+function animate2TilingsAlgo() {
+    for (var x = 0; x < width; x += tileWidth) {
+        for (var y = 0; y < height; y += tileWidth) {
+            var lerpValue = map(sin(frameCount / 20), -1, 1, -1, 2);
+            lerpValue = constrain(lerpValue, 0, 1);
+            var current = blockOne.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
+            var current2 = blockTwo.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
+            sortTransitions(current, current2, x, y, lerpValue);
+        }
+    }
 }
 
 function animateAlgo() {
     for (var x = 0; x < width; x += tileWidth) {
         for (var y = 0; y < height; y += tileWidth) {
-            var lerpValue = map(sin(frameCount / 5), -1, 1, 0, 1);
-            animateAtoB(x, y, lerpValue);
+            var lerpValue = map(sin(frameCount / 100), -1, 1, 0, 1);
+            animateCtoA(x, y, lerpValue);
+            // if (frameCount % 13 == 0) {
+            //     console.log(lerpValue);
+            // }
             // rect(x, y, x + tileWidth, y + tileWidth);
         }
     }
