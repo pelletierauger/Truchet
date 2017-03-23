@@ -1,6 +1,6 @@
 var looping = true;
-var gridXAmount = 32 * 2;
-var gridYAmount = 18 * 2;
+var gridXAmount = 32 * 1;
+var gridYAmount = 18 * 1;
 var tileWidth;
 var number = 1;
 var current;
@@ -18,7 +18,7 @@ function setup() {
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
-    // stroke(70);
+    stroke(70);
     current = 0;
     // noLoop();
     dark = color(50);
