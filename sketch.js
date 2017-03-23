@@ -14,7 +14,7 @@ var shakerToggle = 1;
 function setup() {
     createCanvas(windowWidth, windowWidth * 9 / 16);
     background(51);
-    // frameRate(10);
+    frameRate(20);
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
