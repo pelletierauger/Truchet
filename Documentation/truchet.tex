@@ -150,6 +150,8 @@ function tilingFiller(instructions) {
 
 //Version diaboliquement plus simple de tilingFiller() :
 
+//Ici je crée quelque chose de statique... je crée un pavage qui sera appliqué. 
+//Mais d'où vient cet appel à la fonction \textit{tilingFiller()}?
 var myTiling = tilingFiller({
     inputBlock: blockOne,
     offset: {x: 70, y: 70},
@@ -172,3 +174,43 @@ function tilingFiller(instructions) {
 \subsection{Des zones alpha animables pour les pavages}
 
 Il me faut une façon de définir essentiellement la zone alpha et la position d'un pavage, qui pourront être animées par le système d'animation.
+
+\newpage
+\subsection{La x-sheet}
+
+Et comment vais-je gérer la x-sheet?
+
+\begin{lstlisting}
+var xSheet = {
+    ailleurs: {
+        d: 40,
+        f: function(sum) {
+            tiling00302.update();
+        }
+    },
+    ailleurs2: {
+        d: 200,
+        f: function(sum) {
+            var rN = getSum(xSheet, xSheet.ailleurs);
+            var coFade = cosineFade(sum, 400);
+            tiling00515.mixSame(rN, tiling00302, rN, coFade);
+        }
+    }
+};
+\end{lstlisting}
+
+\subsection{Transitions entre les diverses positions de Truchet}
+
+Je dois pouvoir avoir un système qui reçoit ces instructions :
+
+\begin{lstlisting}
+showTile({
+    permutationOne: "A",
+    permutationTwo: "C",
+    lerpValue: 0.25,
+    position: {x: 5, y: 10},
+    tileWidth: tileWidth,
+    light: color(255,255,150),
+    dark: color(50,50,0)
+});
+\end{lstlisting}
