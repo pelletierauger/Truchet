@@ -19,6 +19,7 @@ function setup() {
     fill(150);
     noStroke();
     stroke(70);
+    strokeWeight(0.5);
     current = 0;
     // noLoop();
     dark = color(50);
@@ -35,7 +36,7 @@ function draw() {
     // animateAlgo();
     fill(255, 0, 0);
     // rect(posShaker, 0, 4, height);
-    posShaker += 20;
+    posShaker += 10;
     if (posShaker > width + 250) {
         posShaker = -250;
         shakerToggle *= -1;
