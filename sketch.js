@@ -1,6 +1,6 @@
 var looping = true;
-var gridXAmount = 32 * 1;
-var gridYAmount = 18 * 1;
+var gridXAmount = 32 * 2;
+var gridYAmount = 18 * 2;
 var tileWidth;
 var number = 1;
 var current;
@@ -18,8 +18,8 @@ function setup() {
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
-    stroke(70);
-    strokeWeight(0.5);
+    // stroke(70);
+    // strokeWeight(0.5);
     current = 0;
     // noLoop();
     dark = color(50);
@@ -28,10 +28,14 @@ function setup() {
 
 function draw() {
     // truchetAlgorithm3();
+    var maps = map(sin(frameCount / 200), -1, 1, 1, 2);
+    scale(maps, maps);
+    translate(-250, 0);
+    rotate(-1 + maps / 2);
     // blockOne.showTiling();
     // show("A", width / 2, height / 2, tileWidth, light, dark);
     // animate();
-    background(color(100));
+    background(color(0));
     animate2TilingsAlgo();
     // animateAlgo();
     fill(255, 0, 0);
