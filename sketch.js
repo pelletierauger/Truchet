@@ -7,6 +7,8 @@ var current;
 var dark;
 var light;
 var r, g, b;
+var posShaker = 0;
+var shakerToggle = 1;
 
 
 function setup() {
@@ -31,6 +33,13 @@ function draw() {
     background(color(100));
     animate2TilingsAlgo();
     // animateAlgo();
+    fill(255, 0, 0);
+    // rect(posShaker, 0, 4, height);
+    posShaker += 20;
+    if (posShaker > width + 250) {
+        posShaker = -250;
+        shakerToggle *= -1;
+    }
 }
 
 function animate2TilingsAlgo() {
@@ -38,6 +47,36 @@ function animate2TilingsAlgo() {
         for (var y = 0; y < height; y += tileWidth) {
             var lerpValue = map(sin(frameCount / 20), -1, 1, -0.4, 1.4);
             lerpValue = constrain(lerpValue, 0, 1);
+            if (x > posShaker) {
+                if (shakerToggle == 1) {
+                    lerpValue = 1;
+                } else {
+                    lerpValue = 0;
+                }
+            } else {
+                if (shakerToggle == 1) {
+                    lerpValue = 0;
+                } else {
+                    lerpValue = 1;
+                }
+                var r = abs(x - posShaker);
+                if (r < 250) {
+                    if (shakerToggle == 1) {
+                        var maps = map(r, 0, 250, 1, 0);
+                    } else {
+                        var maps = map(r, 0, 250, 0, 1);
+                    }
+
+                    lerpValue = maps;
+                }
+            }
+            // var red = lerp(255, 150, lerpValue);
+            // var green = lerp(50, 255, lerpValue);
+            // var blue = lerp(255, 150, lerpValue);
+            // light = (red, green, blue);
+
+            // var d = dist(x, posShaker);
+            // lerpValue = lerp(d, 0,10,)
             var current = blockOne.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
             var current2 = blockTwo.tiling[(x / tileWidth) + (y / tileWidth) * gridXAmount];
             sortTransitions(current, current2, x, y, lerpValue);

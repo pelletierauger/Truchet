@@ -1,5 +1,5 @@
 //transition A to B, lerp also needs to be an argument.
-function animateAtoB_Old(x, y, lerpValue) {
+function animateAtoB(x, y, lerpValue) {
     var tW = tileWidth;
     var dotLerp1 = lerp(0, tW, lerpValue);
     var dotLerp2 = lerp(tW, 0, lerpValue);
@@ -18,7 +18,7 @@ function animateAtoB_Old(x, y, lerpValue) {
     pop();
 }
 
-function animateAtoB(x, y, lerpValue) {
+function animateAtoB_new(x, y, lerpValue) {
     var tW = tileWidth;
     push();
     translate(x + tW / 2, y + tW / 2);
@@ -29,6 +29,57 @@ function animateAtoB(x, y, lerpValue) {
     beginShape();
     fill(dark);
     vertex(0, 0);
+    vertex(0 + tW, 0 + tW);
+    vertex(0, 0 + tW);
+    endShape();
+    pop();
+}
+
+function animateBtoC_new(x, y, lerpValue) {
+    var tW = tileWidth;
+    push();
+    translate(x + tW / 2, y + tW / 2);
+    rotate(PI / 2 * lerpValue);
+    translate(-tW / 2, -tW / 2);
+    fill(light);
+    rect(0, 0, tW, tW);
+    beginShape();
+    fill(dark);
+    vertex(0, 0);
+    vertex(0 + tW, 0);
+    vertex(0, 0 + tW);
+    endShape();
+    pop();
+}
+
+function animateCtoD_new(x, y, lerpValue) {
+    var tW = tileWidth;
+    push();
+    translate(x + tW / 2, y + tW / 2);
+    rotate(PI / 2 * lerpValue);
+    translate(-tW / 2, -tW / 2);
+    fill(light);
+    rect(0, 0, tW, tW);
+    beginShape();
+    fill(dark);
+    vertex(0, 0);
+    vertex(0 + tW, 0);
+    vertex(0 + tW, 0 + tW);
+    endShape();
+    pop();
+}
+
+function animateDtoA_new(x, y, lerpValue) {
+    var tW = tileWidth;
+    push();
+    translate(x + tW / 2, y + tW / 2);
+    rotate(PI / 2 * lerpValue);
+    translate(-tW / 2, -tW / 2);
+    fill(light);
+    rect(0, 0, tW, tW);
+    beginShape();
+    fill(dark);
+    vertex(0 + tW, 0);
     vertex(0 + tW, 0 + tW);
     vertex(0, 0 + tW);
     endShape();
@@ -36,57 +87,6 @@ function animateAtoB(x, y, lerpValue) {
 }
 
 function animateBtoC(x, y, lerpValue) {
-    var tW = tileWidth;
-    push();
-    translate(x + tW / 2, y + tW / 2);
-    rotate(PI / 2 * lerpValue);
-    translate(-tW / 2, -tW / 2);
-    fill(light);
-    rect(0, 0, tW, tW);
-    beginShape();
-    fill(dark);
-    vertex(0, 0);
-    vertex(0 + tW, 0);
-    vertex(0, 0 + tW);
-    endShape();
-    pop();
-}
-
-function animateCtoD(x, y, lerpValue) {
-    var tW = tileWidth;
-    push();
-    translate(x + tW / 2, y + tW / 2);
-    rotate(PI / 2 * lerpValue);
-    translate(-tW / 2, -tW / 2);
-    fill(light);
-    rect(0, 0, tW, tW);
-    beginShape();
-    fill(dark);
-    vertex(0, 0);
-    vertex(0 + tW, 0);
-    vertex(0 + tW, 0 + tW);
-    endShape();
-    pop();
-}
-
-function animateDtoA(x, y, lerpValue) {
-    var tW = tileWidth;
-    push();
-    translate(x + tW / 2, y + tW / 2);
-    rotate(PI / 2 * lerpValue);
-    translate(-tW / 2, -tW / 2);
-    fill(light);
-    rect(0, 0, tW, tW);
-    beginShape();
-    fill(dark);
-    vertex(0 + tW, 0);
-    vertex(0 + tW, 0 + tW);
-    vertex(0, 0 + tW);
-    endShape();
-    pop();
-}
-
-function animateBtoC_Old(x, y, lerpValue) {
     var tW = tileWidth;
     var dotLerp1 = lerp(0, tW, lerpValue);
     var dotLerp2 = lerp(tW, 0, lerpValue);
@@ -106,7 +106,7 @@ function animateBtoC_Old(x, y, lerpValue) {
     pop();
 }
 
-function animateCtoD_Old(x, y, lerpValue) {
+function animateCtoD(x, y, lerpValue) {
     var tW = tileWidth;
     var dotLerp1 = lerp(0, tW, lerpValue);
     var dotLerp2 = lerp(tW, 0, lerpValue);
@@ -126,7 +126,7 @@ function animateCtoD_Old(x, y, lerpValue) {
     pop();
 }
 
-function animateDtoA_Old(x, y, lerpValue) {
+function animateDtoA(x, y, lerpValue) {
     var tW = tileWidth;
     var dotLerp1 = lerp(0, tW, lerpValue);
     var dotLerp2 = lerp(tW, 0, lerpValue);
