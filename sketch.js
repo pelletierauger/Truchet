@@ -27,6 +27,26 @@ function setup() {
 }
 
 function draw() {
+    if (frameCount % 2 == 0) {
+        for (var i = 0; i < blockOne.data.length; i++) {
+            // if (i % 4 == 0) {
+            var d = blockOne.data[i];
+            var e = d[0];
+            blockOne.data[i] = d.substring(1, d.length);
+            blockOne.data[i] += e;
+            // }
+        }
+
+    }
+    // console.log(blockOne.data);
+    blockOne.fullSpace = blockOne.makeLargeSpace({
+        data: blockOne.data,
+        maxSize: { width: 500, height: 700 },
+        size: { width: 8, height: 8 }
+    });
+    blockOne.tiling = blockOne.makeTiling();
+    // console.log(blockOne.tiling.substring(0, 50));
+
     // truchetAlgorithm3();
     // blockOne.showTiling();
     // show("A", width / 2, height / 2, tileWidth, light, dark);
