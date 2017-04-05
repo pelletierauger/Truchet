@@ -1,6 +1,6 @@
 var looping = true;
-var gridXAmount = 32 * 2;
-var gridYAmount = 18 * 2;
+var gridXAmount = 32 * 1;
+var gridYAmount = 18 * 1;
 var tileWidth;
 var number = 1;
 var current;
