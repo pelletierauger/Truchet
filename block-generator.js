@@ -43,6 +43,23 @@ function shiftSeed() {
     seed = blockData.slice(0);
 }
 
+function shiftSeed02() {
+    console.log("SEED : " + seed);
+    blockData = seed.slice(0);
+    console.log("BLOCKDATA : " + blockData);
+    for (var i = 0; i < blockWidth; i++) {
+        var tileToMove = blockData[i][0];
+        if (i == 0) {
+            // blockData[i] = getRandomTile();
+        } else {
+            blockData[i] = blockData[i].slice(1, blockData[i].length);
+            blockData[i] += tileToMove;
+        }
+
+    }
+    console.log("end of shiftSeed : " + blockData);
+    seed = blockData.slice(0);
+}
 
 function generateRandomBlock() {
 
