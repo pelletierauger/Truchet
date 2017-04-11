@@ -20,15 +20,15 @@ function setup() {
     noStroke();
     // stroke(70);
     current = 0;
-    // noLoop();
+    noLoop();
     dark = color(50);
     light = color(120);
 }
 
 function draw() {
     // truchetAlgorithm3();
-    shiftSeed();
-    generateRandomBlock();
+    // shiftSeed();
+    // generateRandomBlock();
     blockRandom001 = new Block({
         type: "static",
         size: { width: blockWidth * 2, height: blockWidth * 2 },

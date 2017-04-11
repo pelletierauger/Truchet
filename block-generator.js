@@ -1,35 +1,57 @@
 var blockWidth;
 var blockData = [];
+var colorData = [];
 var seed = false;
+var colorSeed = false;
+var ColorTile = function(arr) {
+    this.l = {};
+    this.d = {};
+    this.l.r = arr[0];
+    this.l.g = arr[1];
+    this.l.b = arr[2];
+    this.d.r = arr[3];
+    this.d.g = arr[4];
+    this.d.b = arr[5];
+};
+
 generateSeed();
 generateRandomBlock();
 
 function generateSeed() {
-    blockWidth = Math.round(Math.random() * 10 + 7);
+    console.log("GENERATE SEED");
+    console.log(colorSeed);
+    blockWidth = Math.round(Math.random() * 10 + 2);
     blockData = [];
+    colorData = [];
 
-    // Create the seed.
-    // if (seed == false) {
     seed = [];
+    colorSeed = [];
     var builtBlocks = 0;
     while (builtBlocks < blockWidth) {
         for (var i = 0; i <= builtBlocks; i++) {
             if (!blockData[builtBlocks]) {
                 blockData[builtBlocks] = getRandomTile();
+                colorData[builtBlocks] = [];
+                colorData[builtBlocks][0] = new ColorTile([255, 150, 150, 0, 150, 80]);
             } else {
                 blockData[builtBlocks] = blockData[builtBlocks] + getRandomTile();
+                colorData[builtBlocks].push(new ColorTile([255, 150, 150, 0, 150, 80]));
+
             }
         }
         builtBlocks++;
     }
+    console.log(colorData);
     seed = blockData.slice(0);
-    console.log("seed : " + seed);
+    colorSeed = colorData.slice(0);
+    console.log(colorSeed);
 }
 
 function shiftSeed() {
-    console.log("SEED : " + seed);
+    // console.log("SEED : " + seed);
     blockData = seed.slice(0);
-    console.log("BLOCKDATA : " + blockData);
+    colorData = colorSeed.slice(0);
+    // console.log("BLOCKDATA : " + blockData);
     for (var i = 0; i < blockWidth; i++) {
         if (i == 0) {
             blockData[i] = getRandomTile();
@@ -39,8 +61,9 @@ function shiftSeed() {
         }
 
     }
-    console.log("end of shiftSeed : " + blockData);
+    // console.log("end of shiftSeed : " + blockData);
     seed = blockData.slice(0);
+    colorSeed = colorData.slice(0);
 }
 
 function shiftSeed02() {
@@ -64,7 +87,7 @@ function shiftSeed02() {
 function generateRandomBlock() {
 
     // }
-
+    colorData = colorSeed.slice(0);
     // Mirror the seed obliquely.
     var builtRows = 0;
     var currentTile = 1;
@@ -76,20 +99,37 @@ function generateRandomBlock() {
 
         while (blockData[builtRows].length < blockWidth) {
             var tileToGet = blockData[builtRows].length;
+            if (colorData[builtRows]) {
+                var colorToGet = colorData[builtRows].length
+                if (colorData[colorToGet]) {
+                    colorToGet = colorData[colorToGet][builtRows];
+                    colorData[builtRows].push(colorToGet);
+                }
+            }
             tileToGet = blockData[tileToGet][builtRows];
             tileToGet = getSymmetricalTile(tileToGet, "obliqueDownward");
             blockData[builtRows] += tileToGet;
+
         }
         builtRows++;
 
     }
+    var test = 0;
 
     //Mirror horizontally the whole thing
     for (var k = 0; k < blockWidth; k++) {
         for (var j = blockWidth - 1; j >= 0; j--) {
+            console.log("How many times does this gets activated?");
             var tileToMirror = blockData[k][j];
+            var colorToMirror = colorData[k][j];
+
+            // console.log(colorToMirror);
             tileToMirror = getSymmetricalTile(tileToMirror, "horizontal");
             blockData[k] += tileToMirror;
+            // colorData[k].push(colorToMirror);
+            colorData[k].push(test);
+            test++;
+
         }
     }
 
@@ -98,10 +138,13 @@ function generateRandomBlock() {
         var newString = "";
         for (var ll = 0; ll < blockWidth * 2; ll++) {
             var tileToAdd = blockData[l][ll];
+
             tileToAdd = getSymmetricalTile(tileToAdd, "vertical");
             newString += tileToAdd;
         }
         blockData.push(newString);
+        var colorRowToAdd = colorData[l].slice(0);
+        colorData.push(colorRowToAdd);
     }
 }
 
