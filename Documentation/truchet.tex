@@ -214,3 +214,131 @@ showTile({
     dark: color(50,50,0)
 });
 \end{lstlisting}
+
+\newpage
+\section{Vers de nouvelles animations}
+Maintenant que j'ai passé quelques semaines à observer les premiers travaux que j'ai effectués avec les pavages de Truchet, je suis obligé de m'avouer que mes animations ne sont tout simplement pas très intéressantes. Elles sont mathématiquement intéressantes, mais visuellement, je ne suis pas charmé. J'ai eu plusieurs nouvelles idées, cependant. Je crois que la façon la plus efficace de créer des scènes animées avec des pavages de Truchet sera tout simplement de faire changer les pavés d'un coup, sans transition. Les \textit{transitions} seront plutôt définies par l'ordre dans lequel les pavés sont remplacés.
+
+Je peux imaginer l'image finale du film comme une matrice à deux dimensions, dont chaque position contient une lettre (A, B, C, D, E, F), et des informations de couleurs (une couleur pour la partie claire, une couleur pour la partie foncée.
+
+Ensuite, je peux imaginer qu'un pavage (appelé en ce moment un \textit{block}, mais je n'aime pas tellement ce nom) puisse avoir différentes \textit{méthodes de population d'un pavage}, c'est-à-dire, différents algorithmes pour remplir la matrice finale du film avec ses propres données.
+
+Je pourrais même créer une machine à créer automatiquement des pavages et ensuite, à lancer les différentes méthodes de population de la matrice, et voir devant moi un film d'animation infini.
+
+Et évidemment, il me faudrait une xSheet pour planifier le lancement de ces méthodes de population. Le hic, c'est qu'il me faudrait créer un système qui me permettrait de connaître le travail accompli par chaque méthode de population de chaque pavage à n'importe quelle valeur de la xSheet.
+
+Donc, toutes mes méthodes de population doivent recevoir une valeur \textit{t} et répondre avec une matrice. C'est la seule façon de fonctionner.
+
+Et la xSheet, en lançant les méthodes de population de plusieurs pavages en même temps, donnera toujours la même matrice finale.
+
+\begin{lstlisting}
+var xSheet = {
+    introduction: {
+        d: 450,
+        f: function(sum) {
+            // var rN = getSum(xSheet, xSheet.grotte);
+            tiling03.populate(sum);
+            tiling15.populate(sum);
+        }
+    }
+};
+\end{lstlisting}
+\newpage
+\subsection{Les méthodes \textit{populate()}}
+
+Essentiellement, la méthode \textit{populate()} devra, à tous les coups, activer son système comme si \textit{t = 0} et avancer jusqu'à ce que \textit{t} égale la vraie valeur \textit{t} demandée en argument. Et \textit{t} ne peut pas être négatif. 
+Donc, $(t \in \mathbb{Z}) \land (t \geq 0)$.
+
+Comme je n'ai affaires qu'à des matrices finales à 576 valeurs, ces calculs seront minimes.
+
+\subsubsection{Définition des méthodes \textit{populate()}}
+Les méthodes \textit{populate()} seront nombreuses et pourraient être elles-mêmes générées de manière algorithmique. Elles devront évidemment être définies à l'extérieur des objets de type \textit{Block}, donc en fait il ne s'agit pas de méthodes mais simplement de fonctions.
+
+Ce devrait être la xSheet qui permet de lancer telle méthode de population sur tel Block.
+\begin{lstlisting}
+    //la xSheet lance la méthode populate() de l'objet redTiling, 
+    //en lui envoyant une fonction de population choisie, ici diagonalFury.
+    //diagonalFury reçoit l'argument qui deviendra t à l'intérieur de la fonction.
+
+    //diagonalFury() renvoit une matrice dont les éléments sont true ou false.
+    //populate() se sert de cette matrice pour remplir chaque case true avec
+    //une valeur A, B, C, D, E, ou F, et deux valeurs de couleur.
+    redTiling.populate(diagonalFury(sum));
+\end{lstlisting}
+
+En fait, lors de sa création, une fonction de population pourrait très bien générer une liste statique de matrices, et la méthode \textit{populate()} d'un Block pourrait simplement se référer à l'item \textit{t} de cette liste. Je vois certains problèmes avec cette méthode, principalement le fait qu'une méthode de population pourrait très bien avoir un temps d'application infini.
+
+Ceci m'amène à une autre idée : Le but d'une fonction de population pourrait ne pas être simplement de passer d'aucune case habitée à toutes les cases habitées. Une fonction pourrait simplement définir un ensemble de cases habitées selon une valeur \textit{t}, et $t = n$ pourrait très bien contenir un plus grand nombre de cases habitées que $t = n+1$. Donc, des incréments de valeur $t$ pourrait enlever des membres de la population.
+
+\newpage
+\section{Génération de pavages colorés et aléatoires}
+
+Avant de me lancer dans les animations avec mes fonctions de population, je dois m'occuper de ce qui est la prochaine étape naturelle : expérimenter avec les pavages colorés et avec la génération de pavages aléatoires.
+
+La génération de pavages aléatoires se fait en plusieurs étapes :
+
+\begin{lstlisting}
+//we establish the width of the repeated block. All blocks are square.
+var blockWidth = 4;
+var blockData = [];
+//Then, it is a combination of randomized tile decisions and applications of symmetry.
+//for (var i = 0; i < blockWidth; i++) {
+//    getRandomTile();
+//}
+var builtBlocks = 0;
+while (builtBlocks < blockWidth) {
+    for (var i = 0; i <= builtBlocks; i++){
+        blockData[builtBlocks] = blockData[builtBlocks] + getRandomTile();
+    }
+    builtBlocks++;
+}
+
+function getRandomTile() {
+    var tiles = ["A", "B", "C", "D", "E", "F"];
+    var tile = tiles[round(random(0, 5))];
+    return tile;
+}
+
+function getSymmetricalTile(tile, type) {
+    if (tile == "E" || tile == "F") {
+        return tile;
+    }
+    if (tile == "A" && type = "horizontal") {
+        return "D";
+    }
+    if (tile == "A" && type = "vertical") {
+        return "B";
+    }
+    if (tile == "A" && type = "oblique") {
+        return "C";
+    }
+    if (tile == "B" && type = "horizontal") {
+        return "C";
+    }
+    if (tile == "B" && type = "vertical") {
+        return "A";
+    }
+    if (tile == "B" && type = "oblique") {
+        return "D";
+    }
+    if (tile == "C" && type = "horizontal") {
+        return "B";
+    }
+    if (tile == "C" && type = "vertical") {
+        return "D";
+    }
+    if (tile == "C" && type = "oblique") {
+        return "A";
+    }
+    if (tile == "D" && type = "horizontal") {
+        return "A";
+    }
+    if (tile == "D" && type = "vertical") {
+        return "C";
+    }
+    if (tile == "D" && type = "oblique") {
+        return "B";
+    }
+}
+
+\end{lstlisting}

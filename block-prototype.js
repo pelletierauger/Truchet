@@ -120,3 +120,14 @@ var blockTwo = new Block({
     horizontalSymmetry: false,
     verticalSymmetry: false
 });
+
+var blockRandom001 = new Block({
+    type: "static",
+    size: { width: blockWidth, height: blockWidth },
+    maxSize: { width: 500, height: 700 },
+    data: blockData,
+    // data: ["AD", "CB", "AD", "CB"],
+    // data: ["CC", "DD", "CC", "DD"],
+    horizontalSymmetry: false,
+    verticalSymmetry: false
+});

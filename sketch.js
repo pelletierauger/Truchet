@@ -1,6 +1,6 @@
 var looping = true;
-var gridXAmount = 32 * 1;
-var gridYAmount = 18 * 1;
+var gridXAmount = 32 * 2;
+var gridYAmount = 18 * 2;
 var tileWidth;
 var number = 1;
 var current;
@@ -20,26 +20,35 @@ function setup() {
     noStroke();
     // stroke(70);
     current = 0;
-    // noLoop();
+    noLoop();
     dark = color(50);
     light = color(120);
 }
 
 function draw() {
     // truchetAlgorithm3();
-    // blockOne.showTiling();
+    generateRandomBlock();
+    blockRandom001 = new Block({
+        type: "static",
+        size: { width: blockWidth * 2, height: blockWidth * 2 },
+        maxSize: { width: 500, height: 700 },
+        data: blockData,
+        horizontalSymmetry: false,
+        verticalSymmetry: false
+    });
+    blockRandom001.showTiling();
     // show("A", width / 2, height / 2, tileWidth, light, dark);
     // animate();
-    background(color(100));
-    animate2TilingsAlgo();
+    // background(color(100));
+    // animate2TilingsAlgo();
     // animateAlgo();
-    fill(255, 0, 0);
-    // rect(posShaker, 0, 4, height);
-    posShaker += 20;
-    if (posShaker > width + 250) {
-        posShaker = -250;
-        shakerToggle *= -1;
-    }
+    // fill(255, 0, 0);
+    // // rect(posShaker, 0, 4, height);
+    // posShaker += 20;
+    // if (posShaker > width + 250) {
+    //     posShaker = -250;
+    //     shakerToggle *= -1;
+    // }
 }
 
 function animate2TilingsAlgo() {
@@ -309,5 +318,8 @@ function keyPressed() {
             loop();
             looping = true;
         }
+    }
+    if (key == 'r' || key == 'R') {
+        redraw();
     }
 }
