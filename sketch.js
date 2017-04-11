@@ -14,19 +14,20 @@ var shakerToggle = 1;
 function setup() {
     createCanvas(windowWidth, windowWidth * 9 / 16);
     background(51);
-    // frameRate(10);
+    frameRate(10);
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
     // stroke(70);
     current = 0;
-    noLoop();
+    // noLoop();
     dark = color(50);
     light = color(120);
 }
 
 function draw() {
     // truchetAlgorithm3();
+    shiftSeed();
     generateRandomBlock();
     blockRandom001 = new Block({
         type: "static",
@@ -320,6 +321,15 @@ function keyPressed() {
         }
     }
     if (key == 'r' || key == 'R') {
-        redraw();
+        generateSeed();
+        generateRandomBlock();
+        blockRandom001 = new Block({
+            type: "static",
+            size: { width: blockWidth * 2, height: blockWidth * 2 },
+            maxSize: { width: 500, height: 700 },
+            data: blockData,
+            horizontalSymmetry: false,
+            verticalSymmetry: false
+        });
     }
 }

@@ -1,10 +1,16 @@
 var blockWidth;
 var blockData = [];
+var seed = false;
+generateSeed();
 generateRandomBlock();
 
-function generateRandomBlock() {
-    blockWidth = Math.round(Math.random() * 10 + 2);
+function generateSeed() {
+    blockWidth = Math.round(Math.random() * 10 + 7);
     blockData = [];
+
+    // Create the seed.
+    // if (seed == false) {
+    seed = [];
     var builtBlocks = 0;
     while (builtBlocks < blockWidth) {
         for (var i = 0; i <= builtBlocks; i++) {
@@ -16,6 +22,33 @@ function generateRandomBlock() {
         }
         builtBlocks++;
     }
+    seed = blockData.slice(0);
+    console.log("seed : " + seed);
+}
+
+function shiftSeed() {
+    console.log("SEED : " + seed);
+    blockData = seed.slice(0);
+    console.log("BLOCKDATA : " + blockData);
+    for (var i = 0; i < blockWidth; i++) {
+        if (i == 0) {
+            blockData[i] = getRandomTile();
+        } else {
+            blockData[i] = blockData[i].slice(1, blockData[i].length);
+            blockData[i] += getRandomTile();
+        }
+
+    }
+    console.log("end of shiftSeed : " + blockData);
+    seed = blockData.slice(0);
+}
+
+
+function generateRandomBlock() {
+
+    // }
+
+    // Mirror the seed obliquely.
     var builtRows = 0;
     var currentTile = 1;
     while (builtRows < blockWidth) {
@@ -59,6 +92,14 @@ function generateRandomBlock() {
 function getRandomTile() {
     var tiles = ["A", "B", "C", "D", "E", "F"];
     var tile = tiles[Math.round(Math.random() * 5)];
+
+    // var test = Math.random();
+    // if (test < 0.1) {
+    //     tile = "E";
+    // }
+    // if (test > 0.1 && test < 0.95) {
+    //     tile = "F";
+    // }
     return tile;
 }
 
