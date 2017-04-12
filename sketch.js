@@ -20,23 +20,21 @@ function setup() {
     noStroke();
     // stroke(70);
     current = 0;
-    noLoop();
+    // noLoop();
     dark = color(50);
     light = color(120);
 }
 
 function draw() {
-    // truchetAlgorithm3();
-    // shiftSeed();
-    // generateRandomBlock();
-    // blockRandom001 = new Block({
-    //     type: "static",
-    //     size: { width: blockWidth * 2, height: blockWidth * 2 },
-    //     maxSize: { width: 500, height: 700 },
-    //     data: blockData,
-    //     horizontalSymmetry: false,
-    //     verticalSymmetry: false
-    // });
+
+    seed = shiftSeed(seed);
+    data = fillBlock(seed);
+    seededBlock = new Block({
+        size: { width: seed.width * 2, height: seed.width * 2 },
+        maxSize: { width: 500, height: 700 },
+        data: data.block,
+        colors: data.colors
+    });
     seededBlock.showTiling();
 
     // show("A", width / 2, height / 2, tileWidth, light, dark);
@@ -322,15 +320,13 @@ function keyPressed() {
         }
     }
     if (key == 'r' || key == 'R') {
-        generateSeed();
-        generateRandomBlock();
-        blockRandom001 = new Block({
-            type: "static",
-            size: { width: blockWidth * 2, height: blockWidth * 2 },
+        seed = generateSeed(seed);
+        data = fillBlock(seed);
+        seededBlock = new Block({
+            size: { width: seed.width * 2, height: seed.width * 2 },
             maxSize: { width: 500, height: 700 },
-            data: blockData,
-            horizontalSymmetry: false,
-            verticalSymmetry: false
+            data: data.block,
+            colors: data.colors
         });
     }
 }

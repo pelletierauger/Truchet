@@ -6,7 +6,15 @@ var Block = function(block) {
 
 Block.prototype.makeLargeSpace = function(block) {
     var largeArray = block.data.slice(0);
-    var largeColorArray = block.colors.slice(0);
+    // var largeColorArray = block.colors.slice(0);
+
+    var largeColorArray = [];
+    for (var p = 0; p < block.colors.length; p++) {
+        largeColorArray[p] = [];
+        for (var pp = 0; pp < block.colors[p].length; pp++) {
+            largeColorArray[p].push(block.colors[p][pp]);
+        }
+    }
 
     //Fill the tiling array horizontally
     while (largeArray[0].length < block.maxSize.width) {
@@ -51,8 +59,13 @@ Block.prototype.makeTiling = function(fullSpaces) {
 Block.prototype.showTiling = function() {
     for (var x = 0; x < gridXAmount * tileWidth; x += tileWidth) {
         for (var y = 0; y < gridYAmount * tileWidth; y += tileWidth) {
-            var current = this.tilings.tiles[(x / tileWidth) + (y / tileWidth) * gridXAmount];
-            showNumeral(current, x, y, tileWidth, light, dark);
+            var current = (x / tileWidth) + (y / tileWidth) * gridXAmount;
+            var tile = this.tilings.tiles[current];
+            var light = this.tilings.colors[current].l;
+            light = color(light.r, light.g, light.b);
+            var dark = this.tilings.colors[current].d;
+            dark = color(dark.r, dark.g, dark.b);
+            showNumeral(tile, x, y, tileWidth, light, dark);
         }
     }
 };
@@ -67,23 +80,20 @@ function tilingFiller(instructions) {
     for (var x = 0; x < size.width; x += 1) {
         for (var y = 0; y < size.height; y += 1) {
             tiling[x + y * size.width] = space[offset.y + y][offset.x + x];
+            tilingColors[x + y * size.width] = colors[offset.y + y][offset.x + x];
         }
     }
-    var tilingAsAString = "";
-    for (var i = 0; i < tiling.length; i++) {
-        tilingAsAString = tilingAsAString + tiling[i];
-    }
     return {
-        tiling: tiling,
-        tilingColors: tilingColors
+        tiles: tiling,
+        colors: tilingColors
     };
 }
 
 var seededBlock = new Block({
     size: { width: seed.width * 2, height: seed.width * 2 },
-    maxSize: { width: 500, height: 700 },
-    data: data.block,
-    colors: data.colors
+    maxSize: { width: 600, height: 700 },
+    data: data.block.slice(0),
+    colors: data.colors.slice(0)
 });
 
 // var blockOne = new Block({
