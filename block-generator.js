@@ -18,7 +18,7 @@ function generateThings() {
 }
 
 function generateSeed() {
-    var blockWidth = Math.round(Math.random() * 10 + 2);
+    var blockWidth = Math.round(Math.random() * 10 + 7);
     // var blockWidth = 4;
     var blockData = [];
     var colorData = [];
@@ -123,8 +123,9 @@ function fillBlock(seed) {
 }
 
 function shiftSeed(seed) {
-    var red = map(sin(frameCount / 20), -1, 1, 0, 255);
-    var blue = map(sin(frameCount / 20), -1, 1, 0, 75);
+    var red = map(sin(frameCount / 5), -1, 1, 0, 255);
+    var green = map(cos(frameCount / 5), -1, 1, 0, 255);
+    var blue = map(sin(frameCount / 5), -1, 1, 0, 105);
     var blockData = seed.tiles.slice(0);
 
     var colourData = [];
@@ -138,12 +139,12 @@ function shiftSeed(seed) {
     for (var i = 0; i < seed.width; i++) {
         if (i == 0) {
             blockData[i] = getRandomTile();
-            colourData[i] = [new ColorTile([red, 150, 150, 0, blue, blue])];
+            colourData[i] = [new ColorTile([red, green, 150, 0, 20, blue])];
         } else {
             blockData[i] = blockData[i].slice(1, blockData[i].length);
             colourData[i] = colourData[i].slice(1, colourData[i].length);
             blockData[i] += getRandomTile();
-            colourData[i].push(new ColorTile([red, 150, 150, 0, blue, blue]));
+            colourData[i].push(new ColorTile([red, green, 150, 0, 20, blue]));
         }
     }
     return {
