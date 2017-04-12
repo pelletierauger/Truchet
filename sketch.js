@@ -29,15 +29,16 @@ function draw() {
     // truchetAlgorithm3();
     // shiftSeed();
     // generateRandomBlock();
-    blockRandom001 = new Block({
-        type: "static",
-        size: { width: blockWidth * 2, height: blockWidth * 2 },
-        maxSize: { width: 500, height: 700 },
-        data: blockData,
-        horizontalSymmetry: false,
-        verticalSymmetry: false
-    });
-    blockRandom001.showTiling();
+    // blockRandom001 = new Block({
+    //     type: "static",
+    //     size: { width: blockWidth * 2, height: blockWidth * 2 },
+    //     maxSize: { width: 500, height: 700 },
+    //     data: blockData,
+    //     horizontalSymmetry: false,
+    //     verticalSymmetry: false
+    // });
+    seededBlock.showTiling();
+
     // show("A", width / 2, height / 2, tileWidth, light, dark);
     // animate();
     // background(color(100));

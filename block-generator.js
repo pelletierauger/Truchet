@@ -1,8 +1,3 @@
-var blockWidth;
-var blockData = [];
-var colorData = [];
-var seed = false;
-var colorSeed = false;
 var ColorTile = function(arr) {
     this.l = {};
     this.d = {};
@@ -14,18 +9,13 @@ var ColorTile = function(arr) {
     this.d.b = arr[5];
 };
 
-generateSeed();
-generateRandomBlock();
+var seed = generateSeed();
+var data = fillBlock(seed);
 
 function generateSeed() {
-    console.log("GENERATE SEED");
-    console.log(colorSeed);
-    blockWidth = Math.round(Math.random() * 10 + 2);
-    blockData = [];
-    colorData = [];
-
-    seed = [];
-    colorSeed = [];
+    var blockWidth = Math.round(Math.random() * 10 + 2);
+    var blockData = [];
+    var colorData = [];
     var builtBlocks = 0;
     while (builtBlocks < blockWidth) {
         for (var i = 0; i <= builtBlocks; i++) {
@@ -36,15 +26,69 @@ function generateSeed() {
             } else {
                 blockData[builtBlocks] = blockData[builtBlocks] + getRandomTile();
                 colorData[builtBlocks].push(new ColorTile([255, 150, 150, 0, 150, 80]));
-
             }
         }
         builtBlocks++;
     }
-    console.log(colorData);
-    seed = blockData.slice(0);
-    colorSeed = colorData.slice(0);
-    console.log(colorSeed);
+    return {
+        width: blockWidth,
+        tiles: blockData,
+        colors: colorData
+    }
+}
+
+function fillBlock(seed) {
+    var blockWidth = seed.width;
+    var blockData = seed.tiles.slice(0);
+    var colorData = seed.colors.slice(0);
+
+    // Mirror the seed obliquely.
+    var builtRows = 0;
+    var currentTile = 1;
+    while (builtRows < blockWidth) {
+        while (blockData[builtRows].length < blockWidth) {
+            var tileToGet = blockData[builtRows].length;
+            if (colorData[builtRows]) {
+                var colorToGet = colorData[builtRows].length
+                if (colorData[colorToGet]) {
+                    colorToGet = colorData[colorToGet][builtRows];
+                    colorData[builtRows].push(colorToGet);
+                }
+            }
+            tileToGet = blockData[tileToGet][builtRows];
+            tileToGet = getSymmetricalTile(tileToGet, "obliqueDownward");
+            blockData[builtRows] += tileToGet;
+        }
+        builtRows++;
+    }
+
+    // Mirror the block horizontally
+    for (var k = 0; k < blockWidth; k++) {
+        for (var j = blockWidth - 1; j >= 0; j--) {
+            var tileToMirror = blockData[k][j];
+            var colorToMirror = colorData[k][j];
+            tileToMirror = getSymmetricalTile(tileToMirror, "horizontal");
+            blockData[k] += tileToMirror;
+            colorData[k].push(colorToMirror);
+        }
+    }
+
+    // Mirror the block vertically
+    for (var l = blockWidth - 1; l >= 0; l--) {
+        var newString = "";
+        for (var ll = 0; ll < blockWidth * 2; ll++) {
+            var tileToAdd = blockData[l][ll];
+            tileToAdd = getSymmetricalTile(tileToAdd, "vertical");
+            newString += tileToAdd;
+        }
+        blockData.push(newString);
+        var colorRowToAdd = colorData[l].slice(0);
+        colorData.push(colorRowToAdd);
+    }
+    return {
+        block: blockData,
+        colors: colorData
+    }
 }
 
 function shiftSeed() {
@@ -83,71 +127,6 @@ function shiftSeed02() {
     console.log("end of shiftSeed : " + blockData);
     seed = blockData.slice(0);
 }
-
-function generateRandomBlock() {
-
-    // }
-    colorData = colorSeed.slice(0);
-    // Mirror the seed obliquely.
-    var builtRows = 0;
-    var currentTile = 1;
-    while (builtRows < blockWidth) {
-        // var blockToBuild = blockData[currentTile][builtRows];
-        // blockToBuild = getSymmetricalTile(blockToBuild, "obliqueDownward");
-        // blockData[builtRows][currentTile] = blockToBuild;
-
-
-        while (blockData[builtRows].length < blockWidth) {
-            var tileToGet = blockData[builtRows].length;
-            if (colorData[builtRows]) {
-                var colorToGet = colorData[builtRows].length
-                if (colorData[colorToGet]) {
-                    colorToGet = colorData[colorToGet][builtRows];
-                    colorData[builtRows].push(colorToGet);
-                }
-            }
-            tileToGet = blockData[tileToGet][builtRows];
-            tileToGet = getSymmetricalTile(tileToGet, "obliqueDownward");
-            blockData[builtRows] += tileToGet;
-
-        }
-        builtRows++;
-
-    }
-    var test = 0;
-
-    //Mirror horizontally the whole thing
-    for (var k = 0; k < blockWidth; k++) {
-        for (var j = blockWidth - 1; j >= 0; j--) {
-            console.log("How many times does this gets activated?");
-            var tileToMirror = blockData[k][j];
-            var colorToMirror = colorData[k][j];
-
-            // console.log(colorToMirror);
-            tileToMirror = getSymmetricalTile(tileToMirror, "horizontal");
-            blockData[k] += tileToMirror;
-            // colorData[k].push(colorToMirror);
-            colorData[k].push(test);
-            test++;
-
-        }
-    }
-
-    //Mirror vertically the whole thing
-    for (var l = blockWidth - 1; l >= 0; l--) {
-        var newString = "";
-        for (var ll = 0; ll < blockWidth * 2; ll++) {
-            var tileToAdd = blockData[l][ll];
-
-            tileToAdd = getSymmetricalTile(tileToAdd, "vertical");
-            newString += tileToAdd;
-        }
-        blockData.push(newString);
-        var colorRowToAdd = colorData[l].slice(0);
-        colorData.push(colorRowToAdd);
-    }
-}
-
 
 function getRandomTile() {
     var tiles = ["A", "B", "C", "D", "E", "F"];
