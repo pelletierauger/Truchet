@@ -13,11 +13,18 @@ generateThings();
 
 function generateThings() {
     seed = generateSeed();
+    for (var i = 0; i < 10; i++) {
+        seed = shiftSeed(seed, i);
+    }
     // console.log(seed.colors);
     data = fillBlock(seed);
 }
 
 function generateSeed() {
+    var frames = 0;
+    var red = maps(Math.sin(frames / 5), -1, 1, 0, 255);
+    var green = maps(Math.cos(frames / 5), -1, 1, 0, 255);
+    var blue = maps(Math.sin(frames / 5), -1, 1, 0, 105);
     var blockWidth = Math.round(Math.random() * 10 + 7);
     // var blockWidth = 4;
     var blockData = [];
@@ -28,10 +35,10 @@ function generateSeed() {
             if (!blockData[builtBlocks]) {
                 blockData[builtBlocks] = getRandomTile();
                 colorData[builtBlocks] = [];
-                colorData[builtBlocks][0] = new ColorTile([255, 150, 150, 0, 150, 80]);
+                colorData[builtBlocks][0] = new ColorTile([red, green, 150, 0, 20, blue]);
             } else {
                 blockData[builtBlocks] = blockData[builtBlocks] + getRandomTile();
-                colorData[builtBlocks].push(new ColorTile([255, 150, 150, 0, 150, 80]));
+                colorData[builtBlocks].push(new ColorTile([red, green, 150, 0, 20, blue]));
             }
         }
         builtBlocks++;
@@ -122,10 +129,10 @@ function fillBlock(seed) {
     }
 }
 
-function shiftSeed(seed) {
-    var red = map(sin(frameCount / 5), -1, 1, 0, 255);
-    var green = map(cos(frameCount / 5), -1, 1, 0, 255);
-    var blue = map(sin(frameCount / 5), -1, 1, 0, 105);
+function shiftSeed(seed, frame) {
+    var red = maps(Math.sin(frame / 5), -1, 1, 0, 255);
+    var green = maps(Math.cos(frame / 5), -1, 1, 0, 255);
+    var blue = maps(Math.sin(frame / 5), -1, 1, 0, 105);
     var blockData = seed.tiles.slice(0);
 
     var colourData = [];
@@ -183,6 +190,7 @@ function getRandomTile() {
     // if (test > 0.1 && test < 0.95) {
     //     tile = "F";
     // }
+    tile = "C";
     return tile;
 }
 

@@ -9,12 +9,18 @@ var light;
 var r, g, b;
 var posShaker = 0;
 var shakerToggle = 1;
+var boxOfDots = [];
+var dotCount = 0;
+
+function maps(n, start1, stop1, start2, stop2) {
+    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
+};
 
 
 function setup() {
     createCanvas(windowWidth, windowWidth * 9 / 16);
-    background(51);
-    frameRate(10);
+    background(0);
+    frameRate(30);
     tileWidth = width / gridXAmount;
     fill(150);
     noStroke();
@@ -23,19 +29,21 @@ function setup() {
     // noLoop();
     dark = color(50);
     light = color(120);
+    seededBlock.showTiling();
 }
 
 function draw() {
+    scale((width + 20) / width, (width + 20) / width);
+    translate(10, 10);
+    // seed = shiftSeed(seed);
+    // data = fillBlock(seed);
+    // seededBlock = new Block({
+    //     size: { width: seed.width * 2, height: seed.width * 2 },
+    //     maxSize: { width: 500, height: 700 },
+    //     data: data.block,
+    //     colors: data.colors
+    // });
 
-    seed = shiftSeed(seed);
-    data = fillBlock(seed);
-    seededBlock = new Block({
-        size: { width: seed.width * 2, height: seed.width * 2 },
-        maxSize: { width: 500, height: 700 },
-        data: data.block,
-        colors: data.colors
-    });
-    seededBlock.showTiling();
 
     // show("A", width / 2, height / 2, tileWidth, light, dark);
     // animate();
@@ -49,6 +57,13 @@ function draw() {
     //     posShaker = -250;
     //     shakerToggle *= -1;
     // }
+    for (var i = 0; i < 1500; i++) {
+        var box = boxOfDots[dotCount];
+        fill(box.r, box.g, box.b, 50);
+        ellipse(box.x, box.y, box.s);
+        dotCount++;
+    }
+
 }
 
 function animate2TilingsAlgo() {
@@ -227,6 +242,73 @@ function show(position, x, y, tW, light, dark) {
             break;
         default:
             showA(x, y, tileWidth, light, dark);
+    }
+}
+
+function showNumeralDotted(position, x, y, tW, light, dark) {
+    var s = 1;
+    // fill(light.r, light.g, light.b, 50);
+    for (var i = 0; i < 4500; i++) {
+        var randomDotX = x + random(0, tW);
+        var randomDotY = y + random(0, tW);
+        // ellipse(randomDotX, randomDotY, 1);
+        boxOfDots.push({
+            x: randomDotX,
+            y: randomDotY,
+            s: s,
+            r: red(light),
+            g: green(light),
+            b: blue(light)
+        });
+    }
+    // fill(dark.r, dark.g, dark.b, 50);
+    for (var i = 0; i < 4500; i++) {
+        var randomDotX = x + random(0, tW);
+        var randomDotY = y + random(0, tW);
+        // if (randomDotY < -randomDotX + x + y + tW) {
+        //     ellipse(randomDotX, randomDotY, 1);
+        // }
+        switch (position) {
+            case "A":
+                if (randomDotY < randomDotX) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "B":
+                if (randomDotY > -randomDotX + x + y + tW) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "C":
+                if (randomDotY > randomDotX) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "D":
+                if (randomDotY < -randomDotX + x + y + width) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "E":
+                break;
+            case "F":
+                showDot(randomDotX, randomDotY, s);
+                break;
+            default:
+                console.log("Error, not tile type read.");
+        }
+    }
+
+    function showDot(x, y, s) {
+        // ellipse(x, y, s);
+        boxOfDots.push({
+            x: x * 1.01,
+            y: y * 1.01,
+            s: s,
+            r: red(dark),
+            g: green(dark),
+            b: blue(dark)
+        });
     }
 }
 

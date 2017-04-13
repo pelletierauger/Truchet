@@ -65,7 +65,7 @@ Block.prototype.showTiling = function() {
             light = color(light.r, light.g, light.b);
             var dark = this.tilings.colors[current].d;
             dark = color(dark.r, dark.g, dark.b);
-            showNumeral(tile, x, y, tileWidth, light, dark);
+            showNumeralDotted(tile, x, y, tileWidth, light, dark);
         }
     }
 };
