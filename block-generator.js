@@ -35,10 +35,10 @@ function generateSeed() {
             if (!blockData[builtBlocks]) {
                 blockData[builtBlocks] = getRandomTile();
                 colorData[builtBlocks] = [];
-                colorData[builtBlocks][0] = new ColorTile([red, green, 150, 0, 20, blue]);
+                colorData[builtBlocks][0] = new ColorTile([red, 150, green, 0, 20, blue]);
             } else {
                 blockData[builtBlocks] = blockData[builtBlocks] + getRandomTile();
-                colorData[builtBlocks].push(new ColorTile([red, green, 150, 0, 20, blue]));
+                colorData[builtBlocks].push(new ColorTile([red, 150, green, 0, 20, blue]));
             }
         }
         builtBlocks++;
@@ -146,12 +146,12 @@ function shiftSeed(seed, frame) {
     for (var i = 0; i < seed.width; i++) {
         if (i == 0) {
             blockData[i] = getRandomTile();
-            colourData[i] = [new ColorTile([red, green, 150, 0, 20, blue])];
+            colourData[i] = [new ColorTile([red, 150, green, 0, 20, blue])];
         } else {
             blockData[i] = blockData[i].slice(1, blockData[i].length);
             colourData[i] = colourData[i].slice(1, colourData[i].length);
             blockData[i] += getRandomTile();
-            colourData[i].push(new ColorTile([red, green, 150, 0, 20, blue]));
+            colourData[i].push(new ColorTile([red, 150, green, 0, 20, blue]));
         }
     }
     return {
