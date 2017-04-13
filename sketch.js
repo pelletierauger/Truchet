@@ -1,6 +1,6 @@
 var looping = true;
-var gridXAmount = 32 * 2;
-var gridYAmount = 18 * 2;
+var gridXAmount = 32 * 1;
+var gridYAmount = 18 * 1;
 var tileWidth;
 var number = 1;
 var current;
@@ -33,7 +33,7 @@ function setup() {
 }
 
 function draw() {
-    scale((width + 20) / width, (width + 20) / width);
+    scale(width / (width + 20), width / (width + 20));
     translate(10, 10);
     // seed = shiftSeed(seed);
     // data = fillBlock(seed);
@@ -248,7 +248,7 @@ function show(position, x, y, tW, light, dark) {
 function showNumeralDotted(position, x, y, tW, light, dark) {
     var s = 1;
     // fill(light.r, light.g, light.b, 50);
-    for (var i = 0; i < 4500; i++) {
+    for (var i = 0; i < 4500 * 4; i++) {
         var randomDotX = x + random(0, tW);
         var randomDotY = y + random(0, tW);
         // ellipse(randomDotX, randomDotY, 1);
@@ -262,7 +262,7 @@ function showNumeralDotted(position, x, y, tW, light, dark) {
         });
     }
     // fill(dark.r, dark.g, dark.b, 50);
-    for (var i = 0; i < 4500; i++) {
+    for (var i = 0; i < 4500 * 4; i++) {
         var randomDotX = x + random(0, tW);
         var randomDotY = y + random(0, tW);
         // if (randomDotY < -randomDotX + x + y + tW) {
