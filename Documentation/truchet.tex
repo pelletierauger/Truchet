@@ -471,8 +471,16 @@ Donc, ce résultat inattendu est en fait très intéressant et pourrait être ut
 
 \newpage
 \section{Couleurs algorithmiques à conserver}
-Au travers de tous ces problèmes, j'ai créé trois algorithmes de coloration qui sont très intéressants et que je dois bien documenter afin de ne pas perdre. Voici le troisième : 
+Au travers de tous ces problèmes, j'ai créé trois algorithmes de coloration qui sont très intéressants et que je dois bien documenter afin de ne pas perdre.
 
+\subsection{Premier algorithme de coloration}
+Le premier algorithme de coloration est celui avec du jaune et du rouge pour les parties claires, et du bleu pour les parties foncées.
+\begin{lstlisting}
+var red = maps(Math.sin(frames / 5), -1, 1, 0, 255);
+var green = maps(Math.cos(frames / 5), -1, 1, 0, 255);
+var blue = maps(Math.sin(frames / 5), -1, 1, 0, 105);
+colorData[builtBlocks][0] = new ColorTile([red, green, 150, 0, 20, blue]);
+\end{lstlisting}
 \subsection{Second algorithme de coloration}
 Le second algorithme est le bleu et orange, celui qui me fait penser à l'heure magique. C'est mon préféré pour l'instant. C'est avec lui qu'ont été créées les images \ref{normalgutters} et \ref{largegutters}. Voici l'algorithme : 
 \begin{lstlisting}
@@ -492,9 +500,13 @@ var green = maps(Math.cos(frames / 5), -1, 1, 0, 255);
 var blue = maps(Math.sin(frames / 5), -1, 1, 0, 105);
 colorData[builtBlocks][0] = new ColorTile([green, red, 150, blue, 20, 0]);
 \end{lstlisting}
-
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{images/pavage003.jpg}
+\caption{Le premier algorithme de coloration des tuiles}
+\label{thirdcoloralgorithm}
+\end{figure}
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{images/pavage004.jpg}
-\caption{Un exemple du troisième algorithme de coloration des tuiles}
+\caption{Le troisième algorithme de coloration des tuiles}
 \label{thirdcoloralgorithm}
 \end{figure}
