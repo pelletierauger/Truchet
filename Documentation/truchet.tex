@@ -360,3 +360,141 @@ var colorTile = {
     }
 };
 \end{lstlisting}
+
+\newpage
+\section{Motifs créés par diverses erreurs}
+
+J'ai créé plusieurs images très intéressantes qui sont basées sur des erreurs dans mon algorithme, et je dois comprendre ces erreurs afin de pouvoir bien saisir la génèse de ces images.
+
+\subsection{Mauvais algorithme d'affichage des pavés}
+En premier lieu, j'ai créé un nouvel algorithme d'affichage pour mes pavés, qui utilise une énorme quantité de petits points au lieu d'une simple forme géométrique (un carré ou un triangle isocèle rectangle). Mais en créant cet algorithme, j'ai dû me tromper quelque part parce que mes pavages sont devenus complètement défectueux.
+
+Voici à quoi ressemble mon algorithme pour l'instant : 
+\begin{lstlisting}
+function showNumeralDotted(position, x, y, tW, light, dark) {
+    var s = 1;
+    // fill(light.r, light.g, light.b, 50);
+    for (var i = 0; i < 4500 * 4; i++) {
+        var randomDotX = x + random(0, tW);
+        var randomDotY = y + random(0, tW);
+        // ellipse(randomDotX, randomDotY, 1);
+        boxOfDots.push({
+            x: randomDotX,
+            y: randomDotY,
+            s: s,
+            r: red(light),
+            g: green(light),
+            b: blue(light)
+        });
+    }
+    // fill(dark.r, dark.g, dark.b, 50);
+    for (var i = 0; i < 4500 * 4; i++) {
+        var randomDotX = x + random(0, tW);
+        var randomDotY = y + random(0, tW);
+        // if (randomDotY < -randomDotX + x + y + tW) {
+        //     ellipse(randomDotX, randomDotY, 1);
+        // }
+        switch (position) {
+            case "A":
+                if (randomDotY < randomDotX) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "B":
+                if (randomDotY > -randomDotX + x + y + tW) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "C":
+                if (randomDotY > randomDotX) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "D":
+                if (randomDotY < -randomDotX + x + y + width) {
+                    showDot(randomDotX, randomDotY, s);
+                }
+                break;
+            case "E":
+                break;
+            case "F":
+                showDot(randomDotX, randomDotY, s);
+                break;
+            default:
+                console.log("Error, not tile type read.");
+        }
+    }
+
+    function showDot(x, y, s) {
+        // ellipse(x, y, s);
+        boxOfDots.push({
+            x: x * 1.01,
+            y: y * 1.01,
+            s: s,
+            r: red(dark),
+            g: green(dark),
+            b: blue(dark)
+        });
+    }
+}
+\end{lstlisting}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{images/pavage002.jpg}
+\caption{Pavage avec les gouttières normales}
+\label{normalgutters}
+\end{figure}
+
+\subsection{Largeur des gouttières entre les pavés}
+Une erreur spécifique introduite par cet algorithme l'a été après coup. J'ai voulu élargir la zone sur laquelle les points de chaque tuile sont \textit{imprimés} afin de faire disparaître les toutes petites gouttières qu'il y avait entre les tuiles (visibles dans la figure \ref{normalgutters}). Mais ma méthode est défectueuse. J'ai multiplié par 1,01 les valeurs $x$ et $y$ conservées à la toute fin pour \textit{l'impression}. En faisant cela, j'ai plutôt décalé chacune des tuiles d'un certain pourcentage de leurs valeurs $x$ et $y$. Et une tuile décalée se retrouve forcément à se faire \textit{imprimer dessus} par une autre tuile.
+
+\begin{lstlisting}
+function showDot(x, y, s) {
+    // When the x and y values are multiplied like below, it introduces a gradual shift of the tiles.
+    boxOfDots.push({
+        x: x * 1.01,
+        y: y * 1.01,
+        s: s,
+        r: red(dark),
+        g: green(dark),
+        b: blue(dark)
+    });
+}
+\end{lstlisting}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{images/pavage001.jpg}
+\caption{Avec de plus larges gouttières}
+\label{largegutters}
+\end{figure}
+Donc, ce résultat inattendu est en fait très intéressant et pourrait être utilisé encore. La valeur de cette multiplication pourrait être définie de façon algorithmique et produire une variété d'effets animés, par exemple.
+
+\newpage
+\section{Couleurs algorithmiques à conserver}
+Au travers de tous ces problèmes, j'ai créé trois algorithmes de coloration qui sont très intéressants et que je dois bien documenter afin de ne pas perdre. Voici le troisième : 
+
+\subsection{Second algorithme de coloration}
+Le second algorithme est le bleu et orange, celui qui me fait penser à l'heure magique. C'est mon préféré pour l'instant. C'est avec lui qu'ont été créées les images \ref{normalgutters} et \ref{largegutters}. Voici l'algorithme : 
+\begin{lstlisting}
+//These are the bits used at the creation or shifting of a seed, to asign tile colors.
+var red = maps(Math.sin(frames / 5), -1, 1, 0, 255);
+var green = maps(Math.cos(frames / 5), -1, 1, 0, 255);
+var blue = maps(Math.sin(frames / 5), -1, 1, 0, 105);
+colorData[builtBlocks][0] = new ColorTile([red, 150, green, 0, 20, blue]);
+\end{lstlisting}
+
+\subsection{Troisième algorithme de coloration}
+Celui-ci c'est le vert, rose et brun. Il est utilisé dans l'image \ref{thirdcoloralgorithm}. J'aime particulièrement comment le brun vient jouer avec les autres couleurs.
+\begin{lstlisting}
+//These are the bits used at the creation or shifting of a seed, to asign tile colors.
+var red = maps(Math.sin(frames / 5), -1, 1, 0, 255);
+var green = maps(Math.cos(frames / 5), -1, 1, 0, 255);
+var blue = maps(Math.sin(frames / 5), -1, 1, 0, 105);
+colorData[builtBlocks][0] = new ColorTile([green, red, 150, blue, 20, 0]);
+\end{lstlisting}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{images/pavage004.jpg}
+\caption{Un exemple du troisième algorithme de coloration des tuiles}
+\label{thirdcoloralgorithm}
+\end{figure}
