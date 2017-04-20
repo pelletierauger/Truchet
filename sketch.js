@@ -270,22 +270,22 @@ function showNumeralDotted(position, x, y, tW, light, dark) {
         // }
         switch (position) {
             case "A":
-                if (randomDotY < randomDotX) {
+                if (randomDotY - y > randomDotX - x) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
             case "B":
-                if (randomDotY > -randomDotX + x + y + tW) {
+                if (randomDotY < -randomDotX + x + y + tW) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
             case "C":
-                if (randomDotY > randomDotX) {
+                if (randomDotY - y < randomDotX - x) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
             case "D":
-                if (randomDotY < -randomDotX + x + y + width) {
+                if (randomDotY > -randomDotX + x + y + tW) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
@@ -302,8 +302,8 @@ function showNumeralDotted(position, x, y, tW, light, dark) {
     function showDot(x, y, s) {
         // ellipse(x, y, s);
         boxOfDots.push({
-            x: x * 1.01,
-            y: y * 1.01,
+            x: x,
+            y: y,
             s: s,
             r: red(dark),
             g: green(dark),
