@@ -190,7 +190,7 @@ function getRandomTile() {
     // if (test > 0.1 && test < 0.95) {
     //     tile = "F";
     // }
-    tile = "C";
+    // tile = "C";
     return tile;
 }
 
