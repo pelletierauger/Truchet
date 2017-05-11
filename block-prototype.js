@@ -65,9 +65,25 @@ Block.prototype.showTiling = function() {
             light = color(light.r, light.g, light.b);
             var dark = this.tilings.colors[current].d;
             dark = color(dark.r, dark.g, dark.b);
+            showNumeral(tile, x, y, tileWidth, light, dark);
+        }
+    }
+};
+
+Block.prototype.showTilingDotted = function() {
+    for (var x = 0; x < gridXAmount * tileWidth; x += tileWidth) {
+        for (var y = 0; y < gridYAmount * tileWidth; y += tileWidth) {
+            var current = (x / tileWidth) + (y / tileWidth) * gridXAmount;
+            var tile = this.tilings.tiles[current];
+            var light = this.tilings.colors[current].l;
+            light = color(light.r, light.g, light.b);
+            var dark = this.tilings.colors[current].d;
+            dark = color(dark.r, dark.g, dark.b);
             showNumeralDotted(tile, x, y, tileWidth, light, dark);
         }
     }
+    printDots = true;
+    dotCount = 0;
 };
 
 function tilingFiller(instructions) {

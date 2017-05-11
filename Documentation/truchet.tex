@@ -510,3 +510,117 @@ colorData[builtBlocks][0] = new ColorTile([green, red, 150, blue, 20, 0]);
 \caption{Le troisième algorithme de coloration des tuiles}
 \label{thirdcoloralgorithm}
 \end{figure}
+
+\section{Idées pour le générateur}
+Mon générateur est en marche, il fonctionne. Il génère des pavages de Truchet à partir de la notion de \textit{seed}, c'est-à-dire un bloc de tuiles aléatoires qui est ensuite copié (avec diverses symétries) pour former le pavage entier. Maintenant je dois créer un générateur plus robuste et flexible. De quoi ai-je besoin? Que veux-je obtenir?
+
+\subsection{La génération}
+Au niveau de la génération elle-même, je veux pouvoir définir divers ensembles de paramètres, des ensembles qui seraient des objets JavaScript et dont je pourrais amasser de grandes quantités.
+
+\begin{lstlisting}
+var crazy = new Generator({
+    something : "something",
+    somethingElse : "something else"
+});
+\end{lstlisting}
+
+Ensuite, je veux pouvoir définir des algorithmes de coloration. En créer de nombreux de façon manuelle, mais aussi créer des générateurs d'algorithmes de coloration. Peut-être mélanger divers algorithmes. Quelques idées au passage : je veux pouvoir jouer avec des couleurs générées avec des sinus et cosinus comme je le fais déjà, mais aussi jouer avec des palettes de couleurs prédéfinies et divers mélanges de celles-ci. J'aimerais créer des \textit{color spaces} qui me permettrait de me promener spatialement à l'intérieur d'une palette de couleur, entre les \textit{sommets} (les couleurs de la palette initiale) et les \textit{vallons} (les interpolations entre les couleurs initiales).
+
+\subsection{La gestion de la génération}
+
+J'ai aussi énormément d'idées en ce qui concerne la gestion de la génération. Les voici : je voudrais créer un système automatisé qui choisirait lui-même parmi tous les générateurs que j'ai créés, et qui ensuite choisirait parmi les algorithmes de coloration (et même, créerait ses propres algorithmes), et qui créerait une suite infinie de pavages automatiques.
+
+De plus, à chaque fois que le système générerait un pavage, il produirait un fichier JSON dans lequel l'information entière de ce pavage serait contenue. D'abord la définition du pavage elle-même, c'est-à-dire sa taille, son \textit{seed}, ses couleurs, etc. Tout ce qui permettrait de réaliser le pavage à nouveau (car même si une image d'un pavage a été exportée et sauvegardée, il est toujours intéressant de pouvoir recréer le tout algorithmiquement). Ensuite, le fichier JSON contiendrait également les divers paramètres et générateurs qui ont servi à créer le pavage. Finalement, le fichier JSON contiendrait le repas et sa recette.
+
+Il me faudrait ensuite, évidemment, un système pour lire automatiquement ces fichiers JSON et recréer l'image.
+
+Les fichiers JSON contiendraient également l'information de date et heure de leur création, ce qui permettrait de les classer. 
+
+\subsection{Application Node.js}
+Je dois créer une application Node.js avec Express et Sockets.io pour sauvegarder et lire ces fichiers JSON.
+
+\subsection{Bot Twitter}
+Et puis, évidemment qu'il serait très intéressant de créer un bot Twitter qui posterait un nouveau pavage de Truchet par jour. Ou plusieurs. Je pourrais me trouver un vieil ordinateur et le faire rouler mon générateur de pavages de façon continue.
+
+\section{Vers ailleurs}
+J'ai aussi cette idée d'utiliser les pavages de Truchet pour créer une nouvelle sorte d'automates cellulaires. Les automates cellulaires font passer des cases d'un état actif ou inactif selon des règles bien précises et diverses. Qu'adviendrait-il si des automates pouvait changer de multiples paramètres de leurs cellules, les faire changer entre les états A, B, C, D, E, F, et entre divers états de coloration ? Tant de choses à explorer!
+
+\newpage
+\section{Définition des algorithmes de coloration}
+
+Un algorithme de coloration pourrait être défini ainsi : 
+
+\begin{lstlisting}
+
+var generateColorVariant = function() {
+
+    //fS can either null or an integer between 0 and 255
+    var fS = {
+        a: (Math.random() > 0.5) ? null : Math.round(Math.random() * 255),
+        b: (Math.random() > 0.5) ? null : Math.round(Math.random() * 255),
+        c: (Math.random() > 0.5) ? null : Math.round(Math.random() * 255),
+        d: (Math.random() > 0.5) ? null : Math.round(Math.random() * 255),
+        e: (Math.random() > 0.5) ? null : Math.round(Math.random() * 255),
+        f: (Math.random() > 0.5) ? null : Math.round(Math.random() * 255)
+    };
+
+    var f = {
+        a: (Math.random() > 0.5) ? Math.sin : Math.cos,
+        b: (Math.random() > 0.5) ? Math.sin : Math.cos,
+        c: (Math.random() > 0.5) ? Math.sin : Math.cos,
+        d: (Math.random() > 0.5) ? Math.sin : Math.cos,
+        e: (Math.random() > 0.5) ? Math.sin : Math.cos,
+        f: (Math.random() > 0.5) ? Math.sin : Math.cos
+    };
+
+    var c = {
+        a: Math.round(Math.random() * 25),
+        b: Math.round(Math.random() * 25),
+        c: Math.round(Math.random() * 25),
+        d: Math.round(Math.random() * 25),
+        e: Math.round(Math.random() * 25),
+        f: Math.round(Math.random() * 25)
+    };
+
+    var mi = {
+        a: Math.round(Math.random() * 255),
+        b: Math.round(Math.random() * 255),
+        c: Math.round(Math.random() * 255),
+        d: Math.round(Math.random() * 255),
+        e: Math.round(Math.random() * 255),
+        f: Math.round(Math.random() * 255)
+    };
+
+    var ma = {
+        a: Math.round(Math.random() * 255),
+        b: Math.round(Math.random() * 255),
+        c: Math.round(Math.random() * 255),
+        d: Math.round(Math.random() * 255),
+        e: Math.round(Math.random() * 255),
+        f: Math.round(Math.random() * 255)
+    };
+
+    return: {
+        fS: fS,
+        f: f,
+        c: c,
+        mi: mi,
+        ma: ma
+    };
+};
+
+
+colors = colorationAlgorithm001(i, )
+
+var colorationAlgorithm001 = function(fS, f, i, c, mi, ma) {
+    return {
+        lightRed: (fS.a !== null) ? fS.a : maps(f.a(i / c.a), -1, 1, mi.a, ma.a),
+        lightGreen: (fS.b !== null) ? fS.b : maps(f.b(i / c.b), -1, 1, mi.b, ma.b),
+        lightBlue: (fS.c !== null) ? fS.c : maps(f.c(i / c.c), -1, 1, mi.c, ma.c),
+        darkRed: (fS.d !== null) ? fS.d : maps(f.d(i / c.d), -1, 1, mi.d, ma.d),
+        darkGreen: (fS.e !== null) ? fS.e : maps(f.e(i / c.e), -1, 1, mi.e, ma.e),
+        darkBlue: (fS.f !== null) ? fS.f : maps(f.f(i / c.f), -1, 1, mi.f, ma.f)
+    }
+}
+
+\end{lstlisting}

@@ -10,7 +10,8 @@ var r, g, b;
 var posShaker = 0;
 var shakerToggle = 1;
 var boxOfDots = [];
-var dotCount = 0;
+var dotCount = Infinity;
+var printDots = false;
 
 function maps(n, start1, stop1, start2, stop2) {
     return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
@@ -33,8 +34,8 @@ function setup() {
 }
 
 function draw() {
-    scale(width / (width + 20), width / (width + 20));
-    translate(10, 10);
+    // scale(width / (width + 20), width / (width + 20));
+    // translate(10, 10);
     // seed = shiftSeed(seed);
     // data = fillBlock(seed);
     // seededBlock = new Block({
@@ -57,11 +58,17 @@ function draw() {
     //     posShaker = -250;
     //     shakerToggle *= -1;
     // }
-    for (var i = 0; i < 1500; i++) {
-        var box = boxOfDots[dotCount];
-        fill(box.r, box.g, box.b, 50);
-        ellipse(box.x, box.y, box.s);
-        dotCount++;
+
+    //The showing of the dotted tiling
+    if (dotCount < boxOfDots.length) {
+        scale(width / (width + 20), width / (width + 20));
+        translate(10, 5);
+        for (var i = 0; i < 4500; i++) {
+            var box = boxOfDots[dotCount];
+            fill(box.r, box.g, box.b, 50);
+            ellipse(box.x, box.y, box.s);
+            dotCount++;
+        }
     }
 
 }
@@ -248,9 +255,10 @@ function show(position, x, y, tW, light, dark) {
 function showNumeralDotted(position, x, y, tW, light, dark) {
     var s = 1;
     // fill(light.r, light.g, light.b, 50);
-    for (var i = 0; i < 4500 * 4; i++) {
-        var randomDotX = x + random(0, tW);
-        var randomDotY = y + random(0, tW);
+    var gap = 0;
+    for (var i = 0; i < 7500 * 4; i++) {
+        var randomDotX = x + random(-gap, tW + gap);
+        var randomDotY = y + random(-gap, tW + gap);
         // ellipse(randomDotX, randomDotY, 1);
         boxOfDots.push({
             x: randomDotX,
@@ -261,31 +269,32 @@ function showNumeralDotted(position, x, y, tW, light, dark) {
             b: blue(light)
         });
     }
+    gap = 0.5;
     // fill(dark.r, dark.g, dark.b, 50);
     for (var i = 0; i < 4500 * 4; i++) {
-        var randomDotX = x + random(0, tW);
-        var randomDotY = y + random(0, tW);
+        var randomDotX = x + random(-gap, tW + gap);
+        var randomDotY = y + random(-gap, tW + gap);
         // if (randomDotY < -randomDotX + x + y + tW) {
         //     ellipse(randomDotX, randomDotY, 1);
         // }
         switch (position) {
             case "A":
-                if (randomDotY - y > randomDotX - x) {
+                if (randomDotY - gap - y > randomDotX - x) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
             case "B":
-                if (randomDotY < -randomDotX + x + y + tW) {
+                if (randomDotY + gap < -randomDotX + x - 0.05 + y + tW) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
             case "C":
-                if (randomDotY - y < randomDotX - x) {
+                if (randomDotY + gap - y < randomDotX - x) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
             case "D":
-                if (randomDotY > -randomDotX + x + y + tW) {
+                if (randomDotY - gap > -randomDotX + x - 0.05 + y + tW) {
                     showDot(randomDotX, randomDotY, s);
                 }
                 break;
@@ -401,8 +410,14 @@ function keyPressed() {
             looping = true;
         }
     }
-    if (key == 'r' || key == 'R') {
+    if (key == 'r' || key == 'R' || key == 'm' || key == 'M') {
+        cV = generateColorVariant();
         seed = generateSeed(seed);
+        // data = fillBlock(seed);
+        for (var i = 0; i < 10; i++) {
+            seed = shiftSeed(seed, i);
+        }
+        // console.log(seed.colors);
         data = fillBlock(seed);
         seededBlock = new Block({
             size: { width: seed.width * 2, height: seed.width * 2 },
@@ -410,5 +425,10 @@ function keyPressed() {
             data: data.block,
             colors: data.colors
         });
+        seededBlock.showTiling();
+    }
+    if (key == 'p' || key == 'P') {
+        background(0);
+        seededBlock.showTilingDotted();
     }
 }
